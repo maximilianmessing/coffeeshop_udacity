@@ -74,7 +74,6 @@ def create_drink(token):
     body = request.get_json()
     title = body.get('title', None)
     recipe = body.get('recipe', None)
-    print(title)
     try:
         drink = Drink(title=title, recipe=json.dumps(recipe))
         drink.insert()
@@ -105,11 +104,10 @@ def update_drink(token, drink_id):
     if drink is None:
         abort(404)
     try:
-        print([title, recipe])
         if title is not None:
             drink.title = title
         if recipe is not None:
-            drink.recipe = recipe
+            drink.recipe = json.dumps(recipe)
         drink.update()
         return jsonify({"success": True,
                         "drinks": [drink.long()]})
